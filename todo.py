@@ -11,11 +11,19 @@ def showtasks():
     else:
         print("Current tasks:")
         for i, task in enumerate(tasks):
-            print(f"{i}.{task}")
+            print(f"{i+1}.{task}")
 
-
-addtask()
-addtask()
-addtask()
-
-showtasks()
+while True:
+    print("Todo-App")
+    print("1.Add Task\n2.Show tasks\n3.Quit")
+    choice = int(input("Enter a choice(1,2,3): "))
+    
+    if choice == 1:
+        addtask()
+    elif choice == 2:
+        showtasks()
+    elif choice == 3:
+        print("Goodbye!")
+        break
+    else:
+        print("Invalid choice. Try again!")
