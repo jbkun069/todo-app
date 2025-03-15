@@ -5,6 +5,17 @@ def addtask():
     tasks.append(task)
     print(f"{task} is added")
 
-addtask()    
-addtask()    
-print("Current tasks: ", tasks)
+def showtasks():
+    if not tasks:
+        print("No tasks added yet")
+    else:
+        print("Current tasks:")
+        for i, task in enumerate(tasks):
+            print(f"{i}.{task}")
+
+
+addtask()
+addtask()
+addtask()
+
+showtasks()
