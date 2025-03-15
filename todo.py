@@ -34,16 +34,18 @@ def marktasks():
 while True:
     print("Todo-App")
     print("1.Add Task\n2.Show tasks\n3.Mark task as done\n4.Quit")
-    choice = int(input("Enter a choice(1,2,3): "))
-    
-    if choice == 1:
-        addtask()
-    elif choice == 2:
-        showtasks()
-    elif choice == 3:
-        marktasks()
-    elif choice == 4:
-        print("Goodbye!")
-        break
-    else:
-        print("Invalid choice. Try again!")
+    try:
+        choice = int(input("Enter a choice(1,2,3): "))
+        if choice == 1:
+            addtask()
+        elif choice == 2:
+            showtasks()
+        elif choice == 3:
+            marktasks()
+        elif choice == 4:
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Try again!")
+    except ValueError:
+        print("Please enter a valid number!")
