@@ -29,13 +29,26 @@ def marktasks():
     else:
         print("No task to mark!")
         
-
+def deletetasks():
+    showtasks()
+    if tasks:
+        try:
+            num = int(input("Enter the task number to delete: ")) - 1
+            if 0 <= num < len(tasks):
+                removed_task = tasks.pop(num)  # Remove and return the task
+                print(f"Task '{removed_task['task']}' deleted!")
+            else:
+                print("Invalid task number!")
+        except ValueError:
+            print("Please enter a valid number!")
+    else:
+        print("Nothing to delete!")
 
 while True:
     print("Todo-App")
-    print("1.Add Task\n2.Show tasks\n3.Mark task as done\n4.Quit")
+    print("1.Add Task\n2.Show tasks\n3.Mark task as done\n4.Delete task\n5.Quit")
     try:
-        choice = int(input("Enter a choice(1,2,3): "))
+        choice = int(input("Enter a choice(1-5): "))
         if choice == 1:
             addtask()
         elif choice == 2:
@@ -43,6 +56,8 @@ while True:
         elif choice == 3:
             marktasks()
         elif choice == 4:
+            deletetasks()
+        elif choice == 5:
             print("Goodbye!")
             break
         else:
