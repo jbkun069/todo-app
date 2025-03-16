@@ -1,66 +1,60 @@
+import tkinter as tk
+
+# List to store tasks as dictionaries
 tasks = []
 
-def addtask():
-    task = input("Enter a task: ")
-    tasks.append({"task": task, "done": False})
-    print(f"{task} is added")
+# Create the main window
+root = tk.Tk()
+root.title("To-Do List App")
+root.geometry("500x500")
 
-def showtasks():
-    if not tasks:
-        print("No tasks added yet")
-    else:
-        print("Current tasks:")
-        for i, task in enumerate(tasks):
-            status = "✓" if task["done"] else "X"
-            print(f"{i+1}.[{status}] {task['task']}")
-            
-def marktasks():
-    showtasks()
-    if tasks:
-        try:
-            num = int(input("Enter task to mark as done: "))
-            if 1 <= num <= len(tasks):
-                tasks[num-1]["done"] = True
-                print(f"Task '{tasks[num-1]['task']}' marked as done!")
-            else:
-                print("Invalid task number!")
-        except ValueError:
-            print("Please enter a valid number!")
-    else:
-        print("No task to mark!")
-        
-def deletetasks():
-    showtasks()
-    if tasks:
-        try:
-            num = int(input("Enter the task number to delete: ")) - 1
-            if 0 <= num < len(tasks):
-                removed_task = tasks.pop(num)  # Remove and return the task
-                print(f"Task '{removed_task['task']}' deleted!")
-            else:
-                print("Invalid task number!")
-        except ValueError:
-            print("Please enter a valid number!")
-    else:
-        print("Nothing to delete!")
+# Entry box for new tasks
+task_entry = tk.Entry(root, width=30)
+task_entry.grid(row=0, column=0, padx=10, pady=10)
 
-while True:
-    print("Todo-App")
-    print("1.Add Task\n2.Show tasks\n3.Mark task as done\n4.Delete task\n5.Quit")
-    try:
-        choice = int(input("Enter a choice(1-5): "))
-        if choice == 1:
-            addtask()
-        elif choice == 2:
-            showtasks()
-        elif choice == 3:
-            marktasks()
-        elif choice == 4:
-            deletetasks()
-        elif choice == 5:
-            print("Goodbye!")
-            break
-        else:
-            print("Invalid choice. Try again!")
-    except ValueError:
-        print("Please enter a valid number!")
+# Add Task button
+def add_task():
+    task = task_entry.get().strip()
+    if task:
+        tasks.append({"task": task, "done": False})
+        update_task_list()
+        task_entry.delete(0, tk.END)
+
+add_button = tk.Button(root, text="Add Task", command=add_task)
+add_button.grid(row=0, column=1, padx=10, pady=10)
+
+# Listbox to display tasks
+task_listbox = tk.Listbox(root, height=20, width=50)
+task_listbox.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+
+# Function to update the Listbox
+def update_task_list():
+    task_listbox.delete(0, tk.END)
+    for item in tasks:
+        status = "[✓]" if item["done"] else "[X]"
+        task_listbox.insert(tk.END, f"{status} {item['task']}")
+
+# Mark Task as Done button
+def mark_task_done():
+    selected = task_listbox.curselection()
+    if selected:
+        index = selected[0]
+        tasks[index]["done"] = True
+        update_task_list()
+
+mark_button = tk.Button(root, text="Mark Done", command=mark_task_done)
+mark_button.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
+
+# Delete Task button
+def delete_task():
+    selected = task_listbox.curselection()
+    if selected:
+        index = selected[0]
+        tasks.pop(index)  # Remove the task
+        update_task_list()
+
+delete_button = tk.Button(root, text="Delete Task", command=delete_task)
+delete_button.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
+
+# Start the app
+root.mainloop()
