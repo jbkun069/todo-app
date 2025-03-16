@@ -9,8 +9,8 @@ root.title("To-Do List App")
 root.geometry("500x500")
 
 # Entry box for new tasks
-task_entry = tk.Entry(root, width=30)
-task_entry.grid(row=0, column=0, padx=10, pady=10)
+task_entry = tk.Entry(root, width=40)
+task_entry.grid(row=0, column=0, padx=20, pady=20)
 
 # Add Task button
 def add_task():
@@ -24,7 +24,7 @@ add_button = tk.Button(root, text="Add Task", command=add_task)
 add_button.grid(row=0, column=1, padx=10, pady=10)
 
 # Listbox to display tasks
-task_listbox = tk.Listbox(root, height=20, width=50)
+task_listbox = tk.Listbox(root, height=20, width=80)
 task_listbox.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
 # Function to update the Listbox
@@ -43,7 +43,7 @@ def mark_task_done():
         update_task_list()
 
 mark_button = tk.Button(root, text="Mark Done", command=mark_task_done)
-mark_button.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
+mark_button.grid(row=2, column=0, padx=10, pady=0, sticky="ew")
 
 # Delete Task button
 def delete_task():
