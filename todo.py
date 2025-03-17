@@ -6,7 +6,7 @@ tasks = []
 # Create the main window
 root = tk.Tk()
 root.title("To-Do List App")
-root.geometry("400x500")
+root.geometry("500x500")
 root.configure(bg="#A8C1FF")  # Set window background color
 
 # Entry box for new tasks
@@ -25,8 +25,8 @@ add_button = tk.Button(root, text="Add Task", command=add_task, bg="#6f0b94", fg
 add_button.grid(row=0, column=1, padx=10, pady=10)
 
 # Listbox to display tasks
-task_listbox = tk.Listbox(root, height=20, width=50, bg="#FFFFFF", fg="#000000", selectbackground="#BBDEFB")
-task_listbox.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+task_listbox = tk.Listbox(root, height=20, width=80, bg="#FFFFFF", fg="#000000", selectbackground="#BBDEFB")
+task_listbox.grid(row=1, column=0, columnspan=10, padx=10, pady=8)
 
 # Function to update the Listbox with colors
 def update_task_list():
