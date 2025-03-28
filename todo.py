@@ -103,6 +103,55 @@ def clear_all_tasks():
 clear_button = tk.Button(root, text="Clear All", command=clear_all_tasks, bg="#FF5252", fg="white", activebackground="#D32F2F")
 clear_button.grid(row=3, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
 
+# Add a search frame below the task entry
+search_frame = tk.Frame(root, bg="#A8C1FF")
+search_frame.grid(row=4, column=0, columnspan=2, padx=10, pady=5, sticky="ew")
+
+search_entry = tk.Entry(search_frame, width=20, bg="#F5F5F5")
+search_entry.pack(side=tk.LEFT, padx=5)
+
+# Filter options
+filter_var = tk.StringVar(root)
+filter_var.set("All")
+filter_options = ["All", "Done", "Not Done"]
+filter_menu = tk.OptionMenu(search_frame, filter_var, *filter_options)
+filter_menu.config(bg="#F5F5F5")
+filter_menu.pack(side=tk.LEFT, padx=5)
+
+def search_tasks():
+    search_term = search_entry.get().lower()
+    filter_option = filter_var.get()
+    
+    task_listbox.delete(0, tk.END)
+    for i, item in enumerate(tasks):
+        # Apply filters
+        if filter_option == "Done" and not item["done"]:
+            continue
+        if filter_option == "Not Done" and item["done"]:
+            continue
+            
+        # Apply search
+        if search_term and search_term not in item["task"].lower():
+            continue
+            
+        # Display matching task
+        status = "[✓]" if item["done"] else "[ ]"
+        task_text = f"{status} {item['task']}"
+        task_listbox.insert(tk.END, task_text)
+        
+        # Color based on done status
+        last_index = task_listbox.size() - 1
+        if item["done"]:
+            task_listbox.itemconfig(last_index, {'fg': "#2E7D32"})
+        else:
+            task_listbox.itemconfig(last_index, {'fg': "#000000"})
+
+search_button = tk.Button(search_frame, text="Search", command=search_tasks, bg="#6f0b94", fg="white")
+search_button.pack(side=tk.LEFT, padx=5)
+
+clear_search_button = tk.Button(search_frame, text="Clear", command=update_task_list, bg="#6f0b94", fg="white")
+clear_search_button.pack(side=tk.LEFT, padx=5)
+
 # Keyboard shortcuts
 def handle_keypress(event):
     if event.keysym == "Return":
