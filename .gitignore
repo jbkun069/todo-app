@@ -42,5 +42,8 @@ ehthumbs.db
 Thumbs.db
 
 # Project specific
-tasks.json  # Your task data file
-apple.png   # Your icon file (if you don't want to track it)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
