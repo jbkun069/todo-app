@@ -16,44 +16,53 @@ def load_tasks():
         if os.path.exists(TASKS_FILE):
             with open(TASKS_FILE, 'r') as file:
                 tasks = json.load(file)
+                # Ensure loaded data is in correct format
+                if not isinstance(tasks, list):
+                    tasks = []
+    except json.JSONDecodeError:
+        print("Error: Corrupted tasks file. Starting with empty list.")
+        tasks = []
     except Exception as e:
         print(f"Error loading tasks: {e}")
-
-# Save tasks to file
-def save_tasks():
-    try:
-        with open(TASKS_FILE, 'w') as file:
-            json.dump(tasks, file)
-    except Exception as e:
-        print(f"Error saving tasks: {e}")
-
-# Create the main window
-root = tk.Tk()
-root.title("To-Do List App")
-root.geometry("500x550")  # Adjusted height slightly
-root.configure(bg="#A8C1FF")
-root.resizable(True, True)  # Allow resizing
-
-# Create a main frame to contain everything
-main_frame = tk.Frame(root, bg="#A8C1FF", padx=10, pady=10)
-main_frame.pack(fill=tk.BOTH, expand=True)
-
-# Top frame for task entry
-top_frame = tk.Frame(main_frame, bg="#A8C1FF")
-top_frame.pack(fill=tk.X, pady=(0, 5))
-
-# Entry box for new tasks
-task_entry = tk.Entry(top_frame, width=30, bg="#F5F5F5", fg="#000000", borderwidth=2)
-task_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
+        tasks = []
 
 # Add Task button
 def add_task():
     task = task_entry.get().strip()
     if task:
+        # Check for duplicate tasks
+        if any(t["task"].lower() == task.lower() for t in tasks):
+            messagebox.showwarning("Duplicate Task", "This task already exists!")
+            return
+            
         tasks.append({"task": task, "done": False})
         update_task_list()
         task_entry.delete(0, tk.END)
         save_tasks()
+
+# Save tasks to file
+def save_tasks():
+    try:
+        with open(TASKS_FILE, 'w') as file:
+            json.dump(tasks, file, indent=4)  # Add indentation for better readability
+    except Exception as e:
+        print(f"Error saving tasks: {e}")
+        messagebox.showerror("Error", "Failed to save tasks!")
+
+# Initialize main window
+root = tk.Tk()
+root.title("Todo App")
+
+# Create main frames
+top_frame = tk.Frame(root, bg="#A8C1FF")
+top_frame.pack(fill=tk.X, padx=10, pady=10)
+
+main_frame = tk.Frame(root, bg="#A8C1FF")
+main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+# Create task entry field
+task_entry = tk.Entry(top_frame, width=40, bg="#F5F5F5")
+task_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
 add_button = tk.Button(top_frame, text="Add Task", command=add_task, bg="#6f0b94", fg="white", activebackground="#45A049")
 add_button.pack(side=tk.RIGHT)
