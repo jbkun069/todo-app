@@ -1,11 +1,19 @@
 # To-Do List App
 
-This is a simple To-Do List application built with Python and Tkinter.
+This is a feature-rich To-Do List application built with Python and Tkinter with persistent storage.
 
 ## Features
-- Add new tasks.
-- Mark tasks as done.
-- Delete tasks.
+- Add new tasks with duplicate prevention
+- Mark tasks as done/incomplete
+- Delete individual tasks or clear all with confirmation
+- Persistent storage using JSON file (tasks.json)
+- Search functionality with filters (All/Done/Not Done)
+- Keyboard shortcuts (Enter=Add, Delete=Remove, Space=Toggle)
+- UI enhancements: 
+  - Scrollable list with color coding
+  - Button hover effects
+  - Status indicators
+- Automatic save on changes
 
 ## Requirements
 - Python 3.x
