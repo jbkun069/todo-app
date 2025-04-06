@@ -53,6 +53,18 @@ def save_tasks():
 root = tk.Tk()
 root.title("Todo App")
 
+# Set minimum window size
+root.minsize(400, 500)
+
+# Add custom window icon
+try:
+    # You can replace this with your own icon file path
+    icon_path = os.path.join(os.path.dirname(__file__), "apple.png")
+    if os.path.exists(icon_path):
+        root.iconbitmap(icon_path)
+except Exception as e:
+    print(f"Could not load icon: {e}")
+
 # Create main frames
 top_frame = tk.Frame(root, bg="#A8C1FF")
 top_frame.pack(fill=tk.X, padx=10, pady=10)
@@ -64,8 +76,21 @@ main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 task_entry = tk.Entry(top_frame, width=40, bg="#F5F5F5")
 task_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
 
+# Function for button hover effects
+def on_enter(e):
+    e.widget['background'] = '#8a0ebd'  # Lighter purple on hover
+
+def on_leave(e):
+    if e.widget == clear_button:
+        e.widget['background'] = '#FF5252'  # Return to original red for clear button
+    else:
+        e.widget['background'] = '#6f0b94'  # Return to original purple for other buttons
+
 add_button = tk.Button(top_frame, text="Add Task", command=add_task, bg="#6f0b94", fg="white", activebackground="#45A049")
 add_button.pack(side=tk.RIGHT)
+# Add hover effects
+add_button.bind("<Enter>", on_enter)
+add_button.bind("<Leave>", on_leave)
 
 # Create a frame for the listbox
 list_frame = tk.Frame(main_frame, bg="#A8C1FF")
@@ -92,12 +117,20 @@ scrollbar_x.config(command=task_listbox.xview)
 # Function to update the Listbox with colors
 def update_task_list():
     task_listbox.delete(0, tk.END)
-    for item in tasks:
+    for i, item in enumerate(tasks):
         status = "[✓]" if item["done"] else "[ ]"
         task_text = f"{status} {item['task']}"
         task_listbox.insert(tk.END, task_text)
+        
         # Get the index of the last inserted item
         last_index = task_listbox.size() - 1
+        
+        # Apply alternating row colors for better readability
+        if i % 2 == 0:
+            task_listbox.itemconfig(last_index, {'bg': '#F0F0F0'})  # Light gray for even rows
+        else:
+            task_listbox.itemconfig(last_index, {'bg': '#FFFFFF'})  # White for odd rows
+            
         # Color based on done status
         if item["done"]:
             task_listbox.itemconfig(last_index, {'fg': "#2E7D32"})  # Dark green for done
@@ -119,6 +152,9 @@ def toggle_task_status():
 
 mark_button = tk.Button(button_frame, text="Toggle Status", command=toggle_task_status, bg="#6f0b94", fg="white", activebackground="#45A049")
 mark_button.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=2)
+# Add hover effects
+mark_button.bind("<Enter>", on_enter)
+mark_button.bind("<Leave>", on_leave)
 
 # Delete Task button
 def delete_task():
@@ -131,6 +167,9 @@ def delete_task():
 
 delete_button = tk.Button(button_frame, text="Delete Task", command=delete_task, bg="#6f0b94", fg="white", activebackground="#45A049")
 delete_button.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=2)
+# Add hover effects
+delete_button.bind("<Enter>", on_enter)
+delete_button.bind("<Leave>", on_leave)
 
 # Clear all tasks button
 def clear_all_tasks():
@@ -143,6 +182,9 @@ def clear_all_tasks():
 # Add Clear All button
 clear_button = tk.Button(main_frame, text="Clear All", command=clear_all_tasks, bg="#FF5252", fg="white", activebackground="#D32F2F")
 clear_button.pack(fill=tk.X, pady=5)
+# Add hover effects with different color for clear button
+clear_button.bind("<Enter>", on_enter)
+clear_button.bind("<Leave>", on_leave)
 
 # Add a search frame
 search_frame = tk.Frame(main_frame, bg="#A8C1FF")
@@ -183,8 +225,14 @@ def search_tasks():
         task_text = f"{status} {item['task']}"
         task_listbox.insert(tk.END, task_text)
         
-        # Color based on done status
+        # Apply alternating row colors
         last_index = task_listbox.size() - 1
+        if i % 2 == 0:
+            task_listbox.itemconfig(last_index, {'bg': '#F0F0F0'})  # Light gray for even rows
+        else:
+            task_listbox.itemconfig(last_index, {'bg': '#FFFFFF'})  # White for odd rows
+        
+        # Color based on done status
         if item["done"]:
             task_listbox.itemconfig(last_index, {'fg': "#2E7D32"})
         else:
@@ -192,9 +240,15 @@ def search_tasks():
 
 search_button = tk.Button(search_frame, text="Search", command=search_tasks, bg="#6f0b94", fg="white")
 search_button.pack(side=tk.LEFT, padx=2)
+# Add hover effects
+search_button.bind("<Enter>", on_enter)
+search_button.bind("<Leave>", on_leave)
 
 clear_search_button = tk.Button(search_frame, text="Clear", command=update_task_list, bg="#6f0b94", fg="white")
 clear_search_button.pack(side=tk.LEFT, padx=2)
+# Add hover effects
+clear_search_button.bind("<Enter>", on_enter)
+clear_search_button.bind("<Leave>", on_leave)
 
 # Keyboard shortcuts
 def handle_keypress(event):
